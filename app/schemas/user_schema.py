@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from app.utils.roles import UserRole
 
 
 class UserCreate(BaseModel):
@@ -6,7 +7,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     phone: str
     password: str
-    role: str = "donor"
+    role: UserRole = UserRole.DONOR
 
 
 class UserResponse(BaseModel):
