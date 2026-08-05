@@ -44,3 +44,42 @@ def create_profile(profile_data, current_user, db: Session):
             "profile_id": profile.id
         }
     }
+def get_profile(current_user, db):
+
+    user = db.query(User).filter(
+        User.email == current_user["email"]
+    ).first()
+
+    if not user:
+        return {
+            "success": False,
+            "message": "User not found",
+            "data": None
+        }
+
+    profile = db.query(DonorProfile).filter(
+        DonorProfile.user_id == user.id
+    ).first()
+
+    if not profile:
+        return {
+            "success": False,
+            "message": "Donor profile not found",
+            "data": None
+        }
+
+    return {
+        "success": True,
+        "message": "Donor profile fetched successfully",
+        "data": {
+            "blood_group": profile.blood_group,
+            "age": profile.age,
+            "gender": profile.gender,
+            "weight": profile.weight,
+            "phone": profile.phone,
+            "city": profile.city,
+            "state": profile.state,
+            "last_donation_date": profile.last_donation_date,
+            "availability": profile.availability
+        }
+    }
