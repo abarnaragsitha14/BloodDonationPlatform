@@ -20,6 +20,7 @@ class DonorProfile(Base):
     age = Column(Integer, nullable=False)
     gender = Column(String(10), nullable=False)
     weight = Column(Integer, nullable=False)
+    phone = Column(String(15),nullable=False)
 
     city = Column(String(100), nullable=False)
     state = Column(String(100), nullable=False)

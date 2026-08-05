@@ -7,7 +7,10 @@ from app.api.v1.user_routes import router as user_router
 from app.api.v1.auth_routes import router as auth_router
 from app.api.v1.profile_routes import router as profile_router
 from app.api.v1.admin_routes import router as admin_router
+from app.api.v1.blood_request_routes import router as blood_request_router
+from app.api.v1.matching_routes import router as matching_router
 from app.api.v1.donor_profile_routes import router as donor_profile_router
+from app.models.blood_request import BloodRequest
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
@@ -23,6 +26,9 @@ app.include_router(auth_router)
 app.include_router(profile_router)
 app.include_router(admin_router)
 app.include_router(donor_profile_router)
+app.include_router(blood_request_router)
+app.include_router(matching_router)
+
 
 
 @app.get("/")

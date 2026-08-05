@@ -29,6 +29,7 @@ def create_profile(profile_data, current_user, db: Session):
         weight=profile_data.weight,
         city=profile_data.city,
         state=profile_data.state,
+        phone=profile_data.phone,
         last_donation_date=profile_data.last_donation_date
     )
 

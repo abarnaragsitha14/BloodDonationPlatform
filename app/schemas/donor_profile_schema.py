@@ -8,4 +8,5 @@ class DonorProfileCreate(BaseModel):
     weight: int
     city: str
     state: str
+    phone: str
     last_donation_date: str | None = None
