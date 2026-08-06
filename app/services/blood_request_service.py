@@ -51,3 +51,31 @@ def get_all_blood_requests(db):
             for request in requests
         ]
     }
+def get_blood_request_by_id(request_id: int, db):
+
+    request = db.query(BloodRequest).filter(
+        BloodRequest.id == request_id
+    ).first()
+
+    if not request:
+        return {
+            "success": False,
+            "message": "Blood request not found",
+            "data": None
+        }
+
+    return {
+        "success": True,
+        "message": "Blood request fetched successfully",
+        "data": {
+            "id": request.id,
+            "patient_name": request.patient_name,
+            "blood_group": request.blood_group,
+            "units_required": request.units_required,
+            "hospital_name": request.hospital_name,
+            "city": request.city,
+            "state": request.state,
+            "emergency_level": request.emergency_level,
+            "status": request.status
+        }
+    }
