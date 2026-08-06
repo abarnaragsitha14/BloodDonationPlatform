@@ -83,3 +83,32 @@ def get_profile(current_user, db):
             "availability": profile.availability
         }
     }
+def update_donor_profile(profile_data, user_id, db):
+    profile = db.query(DonorProfile).filter(
+        DonorProfile.user_id == user_id
+    ).first()
+
+    if not profile:
+        return {
+            "success": False,
+            "message": "Profile not found",
+            "data": None
+        }
+
+    profile.blood_group = profile_data.blood_group
+    profile.age = profile_data.age
+    profile.gender = profile_data.gender
+    profile.weight = profile_data.weight
+    profile.city = profile_data.city
+    profile.state = profile_data.state
+    profile.last_donation_date = profile_data.last_donation_date
+    profile.availability = profile_data.availability
+
+    db.commit()
+    db.refresh(profile)
+
+    return {
+        "success": True,
+        "message": "Profile updated successfully",
+        "data": profile
+    }

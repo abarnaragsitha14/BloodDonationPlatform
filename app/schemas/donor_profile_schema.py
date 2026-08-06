@@ -10,3 +10,4 @@ class DonorProfileCreate(BaseModel):
     state: str
     phone: str
     last_donation_date: str | None = None
+    availability: str
