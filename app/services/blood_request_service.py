@@ -30,3 +30,24 @@ def create_blood_request(request_data, db: Session):
             "city": request.city
         }
     }
+def get_all_blood_requests(db):
+
+    requests = db.query(BloodRequest).all()
+
+    return {
+        "success": True,
+        "message": "Blood requests fetched successfully",
+        "data": [
+            {
+                "id": request.id,
+                "patient_name": request.patient_name,
+                "blood_group": request.blood_group,
+                "units_required": request.units_required,
+                "hospital_name": request.hospital_name,
+                "city": request.city,
+                "state": request.state,
+                "emergency_level": request.emergency_level
+            }
+            for request in requests
+        ]
+    }
