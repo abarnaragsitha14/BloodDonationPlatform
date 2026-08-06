@@ -7,6 +7,7 @@ from app.services.blood_request_service import create_blood_request
 from app.services.blood_request_service import get_all_blood_requests
 from app.services.blood_request_service import get_blood_request_by_id
 from app.services.blood_request_service import update_blood_request
+from app.services.blood_request_service import  delete_blood_request
 router = APIRouter(
     prefix="/api/v1/blood-request",
     tags=["Blood Request"]
@@ -45,5 +46,14 @@ def update_request(
     return update_blood_request(
         request_id,
         request,
+        db
+    )
+@router.delete("/{request_id}")
+def delete_request(
+    request_id: int,
+    db: Session = Depends(get_db)
+):
+    return delete_blood_request(
+        request_id,
         db
     )

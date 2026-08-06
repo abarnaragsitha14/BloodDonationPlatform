@@ -113,3 +113,24 @@ def update_blood_request(request_id: int, request_data, db):
             "blood_group": request.blood_group
         }
     }
+def delete_blood_request(request_id: int, db):
+
+    request = db.query(BloodRequest).filter(
+        BloodRequest.id == request_id
+    ).first()
+
+    if not request:
+        return {
+            "success": False,
+            "message": "Blood request not found",
+            "data": None
+        }
+
+    db.delete(request)
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "Blood request deleted successfully",
+        "data": None
+    }
