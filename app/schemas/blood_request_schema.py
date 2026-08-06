@@ -9,3 +9,4 @@ class BloodRequestCreate(BaseModel):
     city: str
     state: str
     contact_number: str
+    emergency_level: str

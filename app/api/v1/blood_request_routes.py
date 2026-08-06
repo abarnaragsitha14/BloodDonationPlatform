@@ -6,6 +6,7 @@ from app.schemas.blood_request_schema import BloodRequestCreate
 from app.services.blood_request_service import create_blood_request
 from app.services.blood_request_service import get_all_blood_requests
 from app.services.blood_request_service import get_blood_request_by_id
+from app.services.blood_request_service import update_blood_request
 router = APIRouter(
     prefix="/api/v1/blood-request",
     tags=["Blood Request"]
@@ -33,5 +34,16 @@ def get_request(
 ):
     return get_blood_request_by_id(
         request_id,
+        db
+    )
+@router.put("/{request_id}")
+def update_request(
+    request_id: int,
+    request: BloodRequestCreate,
+    db: Session = Depends(get_db)
+):
+    return update_blood_request(
+        request_id,
+        request,
         db
     )

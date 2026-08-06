@@ -79,3 +79,37 @@ def get_blood_request_by_id(request_id: int, db):
             "status": request.status
         }
     }
+def update_blood_request(request_id: int, request_data, db):
+
+    request = db.query(BloodRequest).filter(
+        BloodRequest.id == request_id
+    ).first()
+
+    if not request:
+        return {
+            "success": False,
+            "message": "Blood request not found",
+            "data": None
+        }
+
+    request.patient_name = request_data.patient_name
+    request.blood_group = request_data.blood_group
+    request.units_required = request_data.units_required
+    request.hospital_name = request_data.hospital_name
+    request.city = request_data.city
+    request.state = request_data.state
+    request.contact_number = request_data.contact_number
+    request.emergency_level = request_data.emergency_level
+
+    db.commit()
+    db.refresh(request)
+
+    return {
+        "success": True,
+        "message": "Blood request updated successfully",
+        "data": {
+            "id": request.id,
+            "patient_name": request.patient_name,
+            "blood_group": request.blood_group
+        }
+    }
