@@ -1,13 +1,13 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException
 
 from app.core.security import get_current_user
 
 
 def admin_required(current_user=Depends(get_current_user)):
 
-    if current_user["role"] != "admin":
+    if current_user.role.lower() != "admin":
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=403,
             detail="Admin access required"
         )
 
