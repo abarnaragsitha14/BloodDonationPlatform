@@ -67,3 +67,23 @@ def get_all_blood_requests_admin(db):
             for request in requests
         ]
     }
+def get_dashboard_statistics(db):
+
+    total_users = db.query(User).count()
+    total_donors = db.query(DonorProfile).count()
+    total_requests = db.query(BloodRequest).count()
+
+    available_donors = db.query(DonorProfile).filter(
+        DonorProfile.availability == "Available"
+    ).count()
+
+    return {
+        "success": True,
+        "message": "Dashboard statistics fetched successfully",
+        "data": {
+            "total_users": total_users,
+            "total_donors": total_donors,
+            "total_blood_requests": total_requests,
+            "available_donors": available_donors
+        }
+    }

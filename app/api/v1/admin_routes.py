@@ -6,6 +6,7 @@ from app.database.database import get_db
 from app.services.admin_service import get_all_users
 from app.services.admin_service import get_all_donor_profiles
 from app.services.admin_service import get_all_blood_requests_admin
+from app.services.admin_service import get_dashboard_statistics
 router = APIRouter(
     prefix="/api/v1/admin",
     tags=["Admin"]
@@ -37,3 +38,9 @@ def blood_requests(
     db: Session = Depends(get_db)
 ):
     return get_all_blood_requests_admin(db)
+@router.get("/statistics")
+def statistics(
+    current_user=Depends(admin_required),
+    db: Session = Depends(get_db)
+):
+    return get_dashboard_statistics(db)
