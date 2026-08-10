@@ -46,3 +46,30 @@ def create_hospital(
             "address": hospital.address
         }
     }
+def get_my_hospital(
+    user_id: int,
+    db: Session
+):
+    hospital = db.query(Hospital).filter(
+        Hospital.user_id == user_id
+    ).first()
+
+    if not hospital:
+        return {
+            "success": False,
+            "message": "Hospital profile not found",
+            "data": None
+        }
+
+    return {
+        "success": True,
+        "message": "Hospital profile fetched successfully",
+        "data": {
+            "id": hospital.id,
+            "hospital_name": hospital.hospital_name,
+            "phone": hospital.phone,
+            "city": hospital.city,
+            "state": hospital.state,
+            "address": hospital.address
+        }
+    }
