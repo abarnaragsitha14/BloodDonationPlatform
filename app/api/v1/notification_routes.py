@@ -13,13 +13,13 @@ router = APIRouter(
 
 @router.post("/")
 def create(
-    user_id: int,
     title: str,
     message: str,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     return create_notification(
-        user_id,
+        current_user.id,
         title,
         message,
         db
