@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.blood_request import BloodRequest
 from app.models.donor_profile import DonorProfile
-
+from app.models.notifications import Notification
 
 def find_matching_donors(request_id: int, db: Session):
 
@@ -26,12 +26,24 @@ def find_matching_donors(request_id: int, db: Session):
     result = []
 
     for donor in donors:
+
+        notification = Notification(
+            user_id=donor.user_id,
+            title="Emergency Blood Request",
+            message=f"{request.blood_group} blood is urgently needed in {request.city}.",
+            status="Unread"
+        )
+
+        db.add(notification)
+
         result.append({
             "id": donor.id,
             "blood_group": donor.blood_group,
             "city": donor.city,
             "phone": donor.phone
         })
+
+    db.commit()
 
     return {
         "success": True,
