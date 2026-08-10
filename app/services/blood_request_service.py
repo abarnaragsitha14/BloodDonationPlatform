@@ -134,3 +134,47 @@ def delete_blood_request(request_id: int, db):
         "message": "Blood request deleted successfully",
         "data": None
     }
+def update_request_status(
+    request_id: int,
+    status: str,
+    db: Session
+):
+
+    request = db.query(BloodRequest).filter(
+        BloodRequest.id == request_id
+    ).first()
+
+    if not request:
+        return {
+            "success": False,
+            "message": "Blood request not found",
+            "data": None
+        }
+
+    allowed_statuses = [
+        "Pending",
+        "Matching",
+        "Fulfilled",
+        "Cancelled"
+    ]
+
+    if status not in allowed_statuses:
+        return {
+            "success": False,
+            "message": "Invalid request status",
+            "data": None
+        }
+
+    request.status = status
+
+    db.commit()
+    db.refresh(request)
+
+    return {
+        "success": True,
+        "message": "Blood request status updated successfully",
+        "data": {
+            "id": request.id,
+            "status": request.status
+        }
+    }

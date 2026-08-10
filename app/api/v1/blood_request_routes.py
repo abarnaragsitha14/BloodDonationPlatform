@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from app.core.permissions import admin_required
 
 from app.database.database import get_db
 from app.schemas.blood_request_schema import BloodRequestCreate
@@ -8,6 +9,7 @@ from app.services.blood_request_service import get_all_blood_requests
 from app.services.blood_request_service import get_blood_request_by_id
 from app.services.blood_request_service import update_blood_request
 from app.services.blood_request_service import  delete_blood_request
+from app.services.blood_request_service import update_request_status
 router = APIRouter(
     prefix="/api/v1/blood-request",
     tags=["Blood Request"]
@@ -55,5 +57,17 @@ def delete_request(
 ):
     return delete_blood_request(
         request_id,
+        db
+    )
+@router.put("/{request_id}/status")
+def update_status(
+    request_id: int,
+    status: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(admin_required)
+):
+    return update_request_status(
+        request_id,
+        status,
         db
     )
