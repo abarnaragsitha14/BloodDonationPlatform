@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.hospital import Hospital
 from app.schemas.hospital_schema import HospitalCreate
-
+from app.schemas.hospital_schema import HospitalUpdate
 
 def create_hospital(
     hospital_data: HospitalCreate,
@@ -64,6 +64,43 @@ def get_my_hospital(
     return {
         "success": True,
         "message": "Hospital profile fetched successfully",
+        "data": {
+            "id": hospital.id,
+            "hospital_name": hospital.hospital_name,
+            "phone": hospital.phone,
+            "city": hospital.city,
+            "state": hospital.state,
+            "address": hospital.address
+        }
+    }
+def update_my_hospital(
+    hospital_data: HospitalUpdate,
+    user_id: int,
+    db: Session
+):
+    hospital = db.query(Hospital).filter(
+        Hospital.user_id == user_id
+    ).first()
+
+    if not hospital:
+        return {
+            "success": False,
+            "message": "Hospital profile not found",
+            "data": None
+        }
+
+    hospital.hospital_name = hospital_data.hospital_name
+    hospital.phone = hospital_data.phone
+    hospital.city = hospital_data.city
+    hospital.state = hospital_data.state
+    hospital.address = hospital_data.address
+
+    db.commit()
+    db.refresh(hospital)
+
+    return {
+        "success": True,
+        "message": "Hospital profile updated successfully",
         "data": {
             "id": hospital.id,
             "hospital_name": hospital.hospital_name,

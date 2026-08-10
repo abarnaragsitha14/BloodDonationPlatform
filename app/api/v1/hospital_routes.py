@@ -5,9 +5,10 @@ from app.database.database import get_db
 from app.core.permissions import hospital_required
 
 from app.schemas.hospital_schema import HospitalCreate
+from app.schemas.hospital_schema import HospitalUpdate
 from app.services.hospital_service import create_hospital
 from app.services.hospital_service import get_my_hospital
-
+from app.services.hospital_service import update_my_hospital
 
 router = APIRouter(
     prefix="/api/v1/hospitals",
@@ -32,6 +33,17 @@ def get_my_profile(
     db: Session = Depends(get_db)
 ):
     return get_my_hospital(
+        current_user.id,
+        db
+    )
+@router.put("/me")
+def update_my_profile(
+    hospital: HospitalUpdate,
+    current_user=Depends(hospital_required),
+    db: Session = Depends(get_db)
+):
+    return update_my_hospital(
+        hospital,
         current_user.id,
         db
     )
