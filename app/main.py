@@ -12,6 +12,7 @@ from app.api.v1.blood_request_routes import router as blood_request_router
 from app.api.v1.matching_routes import router as matching_router
 from app.api.v1.donor_profile_routes import router as donor_profile_router
 from app.api.v1.notification_routes import router as notification_router
+from app.api.v1.hospital_routes import router as hospital_router
 from app.models.blood_request import BloodRequest 
 from app.models.notifications import Notification
 # Create database tables
@@ -32,6 +33,7 @@ app.include_router(donor_profile_router)
 app.include_router(blood_request_router)
 app.include_router(matching_router)
 app.include_router(notification_router)
+app.include_router(hospital_router)
 
 
 
