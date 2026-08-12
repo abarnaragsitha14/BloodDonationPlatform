@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
+from app.core.security import get_current_user
 from app.database.database import get_db
 from app.services.auth_service import login_user
 
@@ -21,3 +21,16 @@ def login(
         form_data.password,
         db
     )
+@router.get("/me")
+def get_current_user_details(
+    current_user=Depends(get_current_user)
+):
+    return {
+        "success": True,
+        "message": "Current user fetched successfully",
+        "data": {
+            "id": current_user.id,
+            "email": current_user.email,
+            "role": current_user.role
+        }
+    }
